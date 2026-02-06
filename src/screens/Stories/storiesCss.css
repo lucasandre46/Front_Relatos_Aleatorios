@@ -1,0 +1,131 @@
+.stories-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+.create-post-box {
+    background: var(--glass-bg);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    margin-bottom: 2rem;
+    border: 1px solid var(--glass-border);
+}
+
+.create-post-box textarea {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--glass-border);
+    background: rgba(0, 0, 0, 0.3);
+    color: white;
+    resize: vertical;
+    min-height: 100px;
+    margin-bottom: 1rem;
+}
+
+.theme-selector {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.theme-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ccc;
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
+    font-size: 0.9rem;
+}
+
+.theme-btn.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+.publish-btn {
+    background: var(--secondary-color);
+    color: white;
+    padding: 0.7rem 2rem;
+    border-radius: 0.5rem;
+    width: 100%;
+    font-weight: bold;
+}
+
+.story-card {
+    margin-bottom: 1.5rem;
+}
+
+.story-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: #aaa;
+}
+
+.story-content {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.story-actions {
+    display: flex;
+    gap: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 1rem;
+}
+
+.action-btn {
+    background: transparent;
+    color: #ccc;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.action-btn:hover {
+    color: var(--primary-color);
+}
+
+.comments-section {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.comment-input-group {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.comment-input-group input {
+    flex: 1;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--glass-border);
+    color: white;
+}
+
+/* Novos estilos adicionados */
+.story-author {
+    font-weight: bold;
+    color: #eee;
+}
+
+.comment {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.comment strong {
+    color: var(--primary-color, #ff6b6b);
+    margin-right: 0.5rem;
+}

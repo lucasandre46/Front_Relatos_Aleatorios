@@ -1,0 +1,10 @@
+/* Reutilizando estilos de Login onde possível e adicionando específicos se necessário */
+@import '../Login/loginCss.css';
+
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 1rem;
+}
