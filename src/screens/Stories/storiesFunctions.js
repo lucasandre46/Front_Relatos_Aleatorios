@@ -1,4 +1,4 @@
-import { createStory, likeStory, commentStory } from './storiesFetch';
+import { createStory, toggleLikeStory, commentStory } from './storiesFetch';
 
 export const handleCreatePost = async (texto, tema, setStories) => {
     if (!texto) return alert('Escreva algo!');
@@ -7,9 +7,9 @@ export const handleCreatePost = async (texto, tema, setStories) => {
     if (!userId) return alert('Você precisa estar logado para postar!');
 
     const newStory = {
-        texto: texto,      // Nome igual ao do Prisma
+        texto: texto,
         tema: tema,
-        id_User: userId    // Nome igual ao do Prisma
+        id_User: userId
     };
 
     const result = await createStory(newStory);
@@ -20,13 +20,20 @@ export const handleCreatePost = async (texto, tema, setStories) => {
 
 export const handleInteraction = async (type, id, data = null) => {
     const userId = localStorage.getItem('userId');
-    if (!userId) return alert('Faça login para interagir!');
+    if (!userId) {
+        alert('Faça login para interagir!');
+        return null;
+    }
 
     if (type === 'like') {
-        // Enviamos o userId para o Back saber QUEM curtiu
-        await likeStory(id, userId);
-        window.location.reload();
+
+        return await toggleLikeStory(id, userId);
     } else if (type === 'comment') {
-        await commentStory(id, data);
+        const payload = {
+            id_Relato: id,
+            id_User: userId,
+            texto: data.texto
+        };
+        return await commentStory(payload);
     }
 };

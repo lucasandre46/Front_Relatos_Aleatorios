@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './storiesCss.css';
-import { fetchStories } from './storiesFetch';
+import { fetchStories, getComments } from './storiesFetch';
 import { handleCreatePost, handleInteraction } from './storiesFunctions';
 
 const StoriesScreen = () => {
@@ -8,6 +8,7 @@ const StoriesScreen = () => {
     const [newPost, setNewPost] = useState('');
     const [selectedTheme, setSelectedTheme] = useState('Aleatório');
     const [commentText, setCommentText] = useState({});
+    const [visibleComments, setVisibleComments] = useState({});
 
     const themes = ['Terror', 'Comédia', 'Drama', 'Romance', 'Sci-Fi', 'Aleatório'];
 
@@ -20,25 +21,65 @@ const StoriesScreen = () => {
         if (Array.isArray(data)) setStories(data);
     };
 
-    const onPostSubmit = () => {
-        handleCreatePost(newPost, selectedTheme, setStories);
-        setNewPost('');
+    const onPostSubmit = async () => {
+        if (!newPost) return alert('Escreva algo!');
+        await handleCreatePost(newPost, selectedTheme, setStories);
+        setNewPost(''); // Limpa o campo após postar
+    };
+
+    const loadPostComments = async (id) => {
+        try {
+            const comments = await getComments(id);
+            setStories(prevStories => prevStories.map(story => {
+                if (story.id === id) {
+                    return { ...story, comentarios: comments };
+                }
+                return story;
+            }));
+        } catch (e) {
+            console.error("Erro ao carregar comentários", e);
+        }
+    };
+
+    const toggleComments = (id) => {
+        setVisibleComments(prev => {
+            const isVisible = !!prev[id];
+            if (!isVisible) {
+                loadPostComments(id);
+            }
+            return { ...prev, [id]: !isVisible };
+        });
     };
 
     const onCommentSubmit = async (id) => {
         const text = commentText[id];
-        if (text) {
-            // Pegamos o ID do usuário logado para o comentário também
-            const userId = localStorage.getItem('userId');
-            await handleInteraction('comment', id, { texto: text, id_User: userId });
-            setCommentText({ ...commentText, [id]: '' });
-            loadStories();
+        if (!text) return alert("Escreva um comentário!");
+
+        const result = await handleInteraction('comment', id, { texto: text });
+
+        if (result) {
+            setCommentText({ ...commentText, [id]: '' }); // Limpa o input específico
+            loadPostComments(id); // Recarrega os comentários do post
+            loadStories(); // Atualiza o contador de comentários no card
         }
+    };
+
+    const handleLike = async (story) => {
+        const result = await handleInteraction('like', story.id);
+        if (result) {
+            loadStories(); // Atualiza o estado do coração e contador
+        }
+    };
+
+    const isUserLiked = (story) => {
+        const userId = localStorage.getItem('userId');
+        if (!userId) return false;
+        return story.curtidas && story.curtidas.some(like => String(like.id_User) === String(userId));
     };
 
     return (
         <div className="stories-container">
-            {/* Criar Post */}
+            {/* Box de Criação de Relato */}
             <div className="create-post-box glass">
                 <h3>Conte sua história</h3>
                 <div className="theme-selector">
@@ -60,45 +101,55 @@ const StoriesScreen = () => {
                 <button className="publish-btn" onClick={onPostSubmit}>Publicar Relato</button>
             </div>
 
-            {/* Feed */}
+            {/* Feed de Histórias */}
             <div className="feed">
                 {stories.map(story => (
                     <div key={story.id} className="story-card glass">
                         <div className="story-header">
                             <span className="story-theme">#{story.tema}</span>
-                            {/* Ajustado para story.user.nome */}
                             <span className="story-author">Por: <strong>{story.user?.nome || 'Anônimo'}</strong></span>
                         </div>
                         <p className="story-content">{story.texto}</p>
 
                         <div className="story-actions">
-                            <button className="action-btn" onClick={() => handleInteraction('like', story.id)}>
-                                {/* Ajustado para usar o contador do Prisma */}
-                                ❤️ Curtir ({story._count?.curtidas || 0})
+                            <button
+                                className={`action-btn ${isUserLiked(story) ? 'liked' : ''}`}
+                                onClick={() => handleLike(story)}
+                            >
+                                {isUserLiked(story) ? '❤️' : '🤍'} Curtir ({story._count?.curtidas || 0})
                             </button>
-                            <button className="action-btn">
-                                💬 Comentar ({story._count?.comentarios || 0})
+
+                            <button className="action-btn" onClick={() => toggleComments(story.id)}>
+                                💬 Comentários ({story._count?.comentarios || 0})
                             </button>
                         </div>
 
-                        <div className="comments-section">
-                            {story.comentarios && story.comentarios.map((c, idx) => (
-                                <div key={idx} className="comment">
-                                    {/* Ajustado para mostrar autor do comentário */}
-                                    <strong>{c.user?.nome || 'Usuário'}: </strong>
-                                    <span>{c.texto}</span>
+                        {/* Seção de Comentários Condicional */}
+                        {visibleComments[story.id] && (
+                            <div className="comments-section">
+                                <hr />
+                                {story.comentarios && story.comentarios.length > 0 ? (
+                                    story.comentarios.map((c, idx) => (
+                                        <div key={idx} className="comment">
+                                            <strong>{c.user?.nome || 'Anônimo'}: </strong>
+                                            <span>{c.texto}</span>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <p className="no-comments">Nenhum comentário ainda.</p>
+                                )}
+
+                                <div className="comment-input-group">
+                                    <input
+                                        type="text"
+                                        placeholder="Escreva um comentário..."
+                                        value={commentText[story.id] || ''}
+                                        onChange={(e) => setCommentText({ ...commentText, [story.id]: e.target.value })}
+                                    />
+                                    <button onClick={() => onCommentSubmit(story.id)}>Enviar</button>
                                 </div>
-                            ))}
-                            <div className="comment-input-group">
-                                <input
-                                    type="text"
-                                    placeholder="Escreva um comentário..."
-                                    value={commentText[story.id] || ''}
-                                    onChange={(e) => setCommentText({ ...commentText, [story.id]: e.target.value })}
-                                />
-                                <button onClick={() => onCommentSubmit(story.id)}>Enviar</button>
                             </div>
-                        </div>
+                        )}
                     </div>
                 ))}
             </div>
