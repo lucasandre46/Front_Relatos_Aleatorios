@@ -1,8 +1,8 @@
-const API_URL = 'http://localhost:3000/relatos';
+const API_URL = 'https://api-relatos-aleatorios-vdzb.vercel.app';
 
 export const fetchStories = async () => {
     try {
-        const response = await fetch(API_URL);
+        const response = await fetch(`${API_URL}/relatos/stories`);
         return await response.json();
     } catch (error) {
         console.error('Erro ao buscar relatos:', error);
@@ -11,7 +11,7 @@ export const fetchStories = async () => {
 };
 
 export const createStory = async (storyData) => {
-    const response = await fetch(API_URL, {
+    const response = await fetch(`${API_URL}/relatos/stories`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(storyData),
@@ -20,7 +20,7 @@ export const createStory = async (storyData) => {
 };
 
 export const toggleLikeStory = async (id_Relato, id_User) => {
-    const response = await fetch(`${API_URL}/curtir/toggle`, {
+    const response = await fetch(`${API_URL}/curtidas/toggle`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id_Relato, id_User }),
@@ -29,7 +29,7 @@ export const toggleLikeStory = async (id_Relato, id_User) => {
 };
 
 export const commentStory = async (dados) => {
-    const response = await fetch(`${API_URL}/comentario`, {
+    const response = await fetch(`${API_URL}/comentarios`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(dados),
@@ -39,7 +39,7 @@ export const commentStory = async (dados) => {
 
 export const getComments = async (id_Relato) => {
     try {
-        const response = await fetch(`${API_URL}/${id_Relato}/comentarios`);
+        const response = await fetch(`${API_URL}/comentarios/${id_Relato}`);
         return await response.json();
     } catch (error) {
         console.error('Erro ao buscar comentários:', error);

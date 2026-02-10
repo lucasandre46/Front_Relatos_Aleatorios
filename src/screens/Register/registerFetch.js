@@ -1,6 +1,6 @@
 export const registerUser = async (credentials) => {
     try {
-        const response = await fetch('http://localhost:3000/auth/create', {
+        const response = await fetch('https://api-relatos-aleatorios-vdzb.vercel.app/auth/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

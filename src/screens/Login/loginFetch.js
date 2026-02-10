@@ -1,6 +1,6 @@
 export const loginUser = async (credentials) => {
     try {
-        const response = await fetch('http://localhost:3000/auth/login', {
+        const response = await fetch('https://api-relatos-aleatorios-vdzb.vercel.app/auth/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
