@@ -21,22 +21,22 @@ const RegisterScreen = () => {
 
     return (
         <div className="register-container">
-            <div className="auth-box glass">
-                <h2>Cadastro</h2>
+            <div className="auth-box">
+                <h2>Crie sua conta</h2>
                 <form onSubmit={onSubmit}>
                     <div className="input-group">
-                        <label>Nome</label>
+                        <label>Nome Completo</label>
                         <input
                             type="text"
                             name="nome"
                             value={formData.nome}
                             onChange={handleChange}
-                            placeholder="Seu Nome"
+                            placeholder="Como quer ser chamado?"
                             required
                         />
                     </div>
                     <div className="input-group">
-                        <label>Email</label>
+                        <label>E-mail</label>
                         <input
                             type="email"
                             name="email"
@@ -53,7 +53,7 @@ const RegisterScreen = () => {
                             name="senha"
                             value={formData.senha}
                             onChange={handleChange}
-                            placeholder="********"
+                            placeholder="Mínimo 6 caracteres"
                             required
                         />
                     </div>
@@ -64,14 +64,14 @@ const RegisterScreen = () => {
                             name="telefone"
                             value={formData.telefone}
                             onChange={handleChange}
-                            placeholder="(XX) XXXXX-XXXX"
+                            placeholder="(00) 00000-0000"
                             required
                         />
                     </div>
-                    <button type="submit" className="auth-btn">Criar Conta</button>
+                    <button type="submit" className="auth-btn">Cadastrar Agora</button>
                 </form>
                 <p className="switch-auth">
-                    Já tem conta? <a href="/login">Voltar para Login</a>
+                    Já é da comunidade? <a href="/login">Faça Login</a>
                 </p>
             </div>
         </div>

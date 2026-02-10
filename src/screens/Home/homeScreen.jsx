@@ -1,34 +1,37 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import './homeCss.css';
 import { handleLoginNavigation } from './homeFunctions';
 import { fetchRelatos } from './homeFetch';
 
 const HomeScreen = () => {
+    const [relatos, setRelatos] = useState([]);
+
     useEffect(() => {
-        // Exemplo de uso do fetch ao carregar
-        fetchRelatos().then(data => console.log(data));
+        fetchRelatos().then(data => setRelatos(data));
     }, []);
 
     return (
         <div className="home-container">
             <header className="home-header">
-                <h1>Relatos Aleatórios</h1>
-                <p>Compartilhe suas histórias com o mundo.</p>
+                <h1>Relatos<span>.app</span></h1>
                 <button className="login-btn" onClick={handleLoginNavigation}>
-                    Login
+                    Entrar
                 </button>
             </header>
 
             <main className="relatos-feed">
-                {/* Placeholder para relatos */}
-                <div className="relato-card glass">
-                    <h3>Um dia inesquecível</h3>
-                    <p>Era uma vez...</p>
-                </div>
-                <div className="relato-card glass">
-                    <h3>A viagem perdida</h3>
-                    <p>Tudo começou quando...</p>
-                </div>
+                {relatos.length > 0 ? (
+                    relatos.map(relato => (
+                        <div key={relato.id} className="relato-card">
+                            <h3>{relato.title}</h3>
+                            <p>{relato.content}</p>
+                        </div>
+                    ))
+                ) : (
+                    <div className="relato-card">
+                        <p>Buscando novas histórias no feed...</p>
+                    </div>
+                )}
             </main>
         </div>
     );

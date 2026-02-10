@@ -24,7 +24,7 @@ const StoriesScreen = () => {
     const onPostSubmit = async () => {
         if (!newPost) return alert('Escreva algo!');
         await handleCreatePost(newPost, selectedTheme, setStories);
-        setNewPost(''); // Limpa o campo após postar
+        setNewPost('');
     };
 
     const loadPostComments = async (id) => {
@@ -58,16 +58,16 @@ const StoriesScreen = () => {
         const result = await handleInteraction('comment', id, { texto: text });
 
         if (result) {
-            setCommentText({ ...commentText, [id]: '' }); // Limpa o input específico
-            loadPostComments(id); // Recarrega os comentários do post
-            loadStories(); // Atualiza o contador de comentários no card
+            setCommentText({ ...commentText, [id]: '' });
+            loadPostComments(id);
+            loadStories();
         }
     };
 
     const handleLike = async (story) => {
         const result = await handleInteraction('like', story.id);
         if (result) {
-            loadStories(); // Atualiza o estado do coração e contador
+            loadStories();
         }
     };
 
@@ -77,10 +77,11 @@ const StoriesScreen = () => {
         return story.curtidas && story.curtidas.some(like => String(like.id_User) === String(userId));
     };
 
+    // O RETURN DEVE ESTAR SEMPRE DENTRO DA FUNÇÃO StoriesScreen
     return (
         <div className="stories-container">
             {/* Box de Criação de Relato */}
-            <div className="create-post-box glass">
+            <div className="create-post-box">
                 <h3>Conte sua história</h3>
                 <div className="theme-selector">
                     {themes.map(theme => (
@@ -94,7 +95,7 @@ const StoriesScreen = () => {
                     ))}
                 </div>
                 <textarea
-                    placeholder="Era uma vez..."
+                    placeholder="O que está acontecendo agora?"
                     value={newPost}
                     onChange={(e) => setNewPost(e.target.value)}
                 />
@@ -104,10 +105,10 @@ const StoriesScreen = () => {
             {/* Feed de Histórias */}
             <div className="feed">
                 {stories.map(story => (
-                    <div key={story.id} className="story-card glass">
+                    <div key={story.id} className="story-card">
                         <div className="story-header">
                             <span className="story-theme">#{story.tema}</span>
-                            <span className="story-author">Por: <strong>{story.user?.nome || 'Anônimo'}</strong></span>
+                            <span className="story-author">Por <strong>{story.user?.nome || 'Anônimo'}</strong></span>
                         </div>
                         <p className="story-content">{story.texto}</p>
 
@@ -116,27 +117,25 @@ const StoriesScreen = () => {
                                 className={`action-btn ${isUserLiked(story) ? 'liked' : ''}`}
                                 onClick={() => handleLike(story)}
                             >
-                                {isUserLiked(story) ? '❤️' : '🤍'} Curtir ({story._count?.curtidas || 0})
+                                {isUserLiked(story) ? '💙' : '🤍'} {story._count?.curtidas || 0}
                             </button>
 
                             <button className="action-btn" onClick={() => toggleComments(story.id)}>
-                                💬 Comentários ({story._count?.comentarios || 0})
+                                💬 {story._count?.comentarios || 0}
                             </button>
                         </div>
 
-                        {/* Seção de Comentários Condicional */}
                         {visibleComments[story.id] && (
                             <div className="comments-section">
-                                <hr />
                                 {story.comentarios && story.comentarios.length > 0 ? (
                                     story.comentarios.map((c, idx) => (
                                         <div key={idx} className="comment">
-                                            <strong>{c.user?.nome || 'Anônimo'}: </strong>
+                                            <strong>{c.user?.nome || 'Anônimo'}</strong>
                                             <span>{c.texto}</span>
                                         </div>
                                     ))
                                 ) : (
-                                    <p className="no-comments">Nenhum comentário ainda.</p>
+                                    <p style={{ fontSize: '0.8rem', color: '#64748b' }}>Seja o primeiro a comentar...</p>
                                 )}
 
                                 <div className="comment-input-group">

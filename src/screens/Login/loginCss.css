@@ -4,72 +4,97 @@
     align-items: center;
     min-height: 100vh;
     padding: 1rem;
+    background-color: #0f172a;
+    /* Slate 900 */
+    font-family: 'Inter', sans-serif;
 }
 
 .auth-box {
     width: 100%;
     max-width: 400px;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+    background-color: #1e293b;
+    /* Slate 800 */
+    padding: 2.5rem;
+    border-radius: 16px;
+    border: 1px solid #334155;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 }
 
 .auth-box h2 {
     text-align: center;
-    font-size: 2rem;
-    margin-bottom: 1rem;
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 2rem;
+    color: #38bdf8;
+    /* Azul Ciano */
 }
 
 .input-group {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.2rem;
 }
 
 .input-group label {
-    font-size: 0.9rem;
-    color: #cbd5e1;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #94a3b8;
+    /* Texto dim */
 }
 
 .input-group input {
-    padding: 0.8rem;
-    border-radius: 0.5rem;
-    border: 1px solid var(--glass-border);
-    background: var(--input-bg);
-    color: white;
-    transition: border-color 0.3s;
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    background-color: #0f172a;
+    color: #f8fafc;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
 }
 
 .input-group input:focus {
-    border-color: var(--primary-color);
+    border-color: #38bdf8;
+}
+
+.input-group input::placeholder {
+    color: #475569;
 }
 
 .auth-btn {
     width: 100%;
-    padding: 1rem;
-    border-radius: 0.5rem;
-    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-    color: white;
-    font-weight: bold;
+    padding: 0.9rem;
+    border-radius: 8px;
+    background-color: #38bdf8;
+    color: #0f172a;
+    border: none;
+    font-weight: 700;
     font-size: 1rem;
+    cursor: pointer;
     margin-top: 1rem;
+    transition: background-color 0.2s, transform 0.1s;
 }
 
 .auth-btn:hover {
-    opacity: 0.9;
-    transform: scale(1.02);
+    background-color: #0ea5e9;
+}
+
+.auth-btn:active {
+    transform: scale(0.98);
 }
 
 .switch-auth {
     text-align: center;
     font-size: 0.9rem;
-    margin-top: 1rem;
+    margin-top: 1.5rem;
+    color: #94a3b8;
 }
 
 .switch-auth a {
-    color: var(--secondary-color);
+    color: #38bdf8;
     text-decoration: none;
+    font-weight: 600;
 }
 
 .switch-auth a:hover {

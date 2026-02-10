@@ -13,11 +13,11 @@ const LoginScreen = () => {
 
     return (
         <div className="login-container">
-            <div className="auth-box glass">
-                <h2>Entrar</h2>
+            <div className="auth-box">
+                <h2>Acesse sua conta</h2>
                 <form onSubmit={onSubmit}>
                     <div className="input-group">
-                        <label>Email</label>
+                        <label>E-mail</label>
                         <input
                             type="email"
                             value={email}
@@ -29,17 +29,17 @@ const LoginScreen = () => {
                     <div className="input-group">
                         <label>Senha</label>
                         <input
-                            type="senha"
+                            type="password"
                             value={senha}
                             onChange={(e) => setSenha(e.target.value)}
-                            placeholder="********"
+                            placeholder="Sua senha secreta"
                             required
                         />
                     </div>
-                    <button type="submit" className="auth-btn">Acessar</button>
+                    <button type="submit" className="auth-btn">Entrar</button>
                 </form>
                 <p className="switch-auth">
-                    Não tem conta? <a href="/register">Cadastre-se</a>
+                    Ainda não faz parte? <a href="/register">Cadastre-se</a>
                 </p>
             </div>
         </div>

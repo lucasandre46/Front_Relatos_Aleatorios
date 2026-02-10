@@ -1,4 +1,4 @@
-/* Reutilizando estilos de Login onde possível e adicionando específicos se necessário */
+/* Reutilizando a base do Login e aplicando tons consistentes */
 @import '../Login/loginCss.css';
 
 .register-container {
@@ -6,5 +6,22 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    padding: 1rem;
+    padding: 2rem 1rem;
+    background-color: #0f172a;
+    /* Slate 900 */
+}
+
+/* Sobrescrevendo qualquer resquício de 'glass' para manter o padrão Dark Social */
+.auth-box {
+    background-color: #1e293b;
+    /* Slate 800 */
+    border: 1px solid #334155;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* Ajuste para telas menores, já que o cadastro tem mais campos */
+@media (max-height: 700px) {
+    .register-container {
+        align-items: flex-start;
+    }
 }
