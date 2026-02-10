@@ -20,7 +20,7 @@ export const createStory = async (storyData) => {
 };
 
 export const toggleLikeStory = async (id_Relato, id_User) => {
-    const response = await fetch(`${API_URL}/curtidas/toggle`, {
+    const response = await fetch(`${API_URL}/relatos/stories/curtir/toggle`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id_Relato, id_User }),
@@ -29,7 +29,11 @@ export const toggleLikeStory = async (id_Relato, id_User) => {
 };
 
 export const commentStory = async (dados) => {
-    const response = await fetch(`${API_URL}/comentarios`, {
+    // Ajuste para o endpoint correto de criar comentário
+    // Se o backend espera id_Relato no corpo, o endpoint pode ser /comentarios ou /relatos/stories/comentario
+    // Vou tentar manter o padrão que estava antes: .../relatos/stories/comentario
+    // Mas com a nova base URL: ${API_URL}/relatos/stories/comentario
+    const response = await fetch(`${API_URL}/relatos/stories/comentario`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(dados),
@@ -39,7 +43,10 @@ export const commentStory = async (dados) => {
 
 export const getComments = async (id_Relato) => {
     try {
-        const response = await fetch(`${API_URL}/comentarios/${id_Relato}`);
+        // Restaurando o caminho original que funcionava antes da refatoração
+        // Base: https://api.../relatos/stories
+        // Path: /${id_Relato}/comentarios
+        const response = await fetch(`${API_URL}/relatos/stories/${id_Relato}/comentarios`);
         return await response.json();
     } catch (error) {
         console.error('Erro ao buscar comentários:', error);
